@@ -543,6 +543,29 @@
                 "chance": 20
             }
         ],
+        "herbs": []
+    },
+    "schizoid": {
+        "severity": "major",
+        "congenital": "always",
+        "moons_until": 0,
+        "mortality": {
+            "newborn": 0,
+            "kitten": 0,
+            "adolescent": 0,
+            "young adult": 0,
+            "adult": 0,
+            "senior adult": 0,
+            "senior": 0
+        },
+        "illness_infectiousness": [
+        ],
+        "risks": [
+            {
+                "name": "constant nightmares",
+                "chance": 20
+            }
+        ],
         "herbs": [
             "thyme",
             "juniper",
