@@ -10,7 +10,7 @@ from scripts.game_structure.game_essentials import (
     screen_y,
     MANAGER,
 )
-from scripts.game_structure.image_button import (
+from scripts.game_structure.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UIRelationStatusBar,
@@ -81,6 +81,8 @@ class RelationshipScreen(Screens):
 
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
+            self.mute_button_pressed(event)
+
             if event.ui_element in self.sprite_buttons.values():
                 self.inspect_cat = event.ui_element.return_cat_object()
                 self.update_inspected_relation()
@@ -194,6 +196,7 @@ class RelationshipScreen(Screens):
                 )
                 self.update_checkboxes()
                 self.apply_cat_filter()
+                self.update_cat_page()
             elif event.ui_element == self.checkboxes["show_empty"]:
                 game.clan.clan_settings["show empty relation"] = (
                     not game.clan.clan_settings["show empty relation"]
@@ -203,14 +206,16 @@ class RelationshipScreen(Screens):
                 self.update_cat_page()
 
     def screen_switches(self):
+        self.show_mute_buttons()
 
         self.previous_cat_button = UIImageButton(
             scale(pygame.Rect((50, 50), (306, 60))),
             "",
             object_id="#previous_cat_button",
+            sound_id="page_flip",
         )
         self.next_cat_button = UIImageButton(
-            scale(pygame.Rect((1244, 50), (306, 60))), "", object_id="#next_cat_button"
+            scale(pygame.Rect((1244, 50), (306, 60))), "", object_id="#next_cat_button", sound_id="page_flip",
         )
         self.back_button = UIImageButton(
             scale(pygame.Rect((50, 1290), (210, 60))), "", object_id="#back_button"

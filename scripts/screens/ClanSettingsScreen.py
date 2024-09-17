@@ -10,7 +10,8 @@ import ujson
 
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game, screen_x, screen_y, MANAGER
-from scripts.game_structure.image_button import UIImageButton
+
+from scripts.game_structure.ui_elements import UIImageButton
 from scripts.utility import (
     get_text_box_theme,
     scale,
@@ -89,6 +90,7 @@ class ClanSettingsScreen(Screens):
                 return
             self.handle_checkbox_events(event)
             self.menu_button_pressed(event)
+            self.mute_button_pressed(event)
 
     def handle_checkbox_events(self, event):
         """
@@ -133,6 +135,7 @@ class ClanSettingsScreen(Screens):
         """
         self.settings_changed = False
         self.show_menu_buttons()
+        self.show_mute_buttons()
         self.set_disabled_menu_buttons(["stats"])
 
         self.general_settings_button = UIImageButton(

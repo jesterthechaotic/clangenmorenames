@@ -8,7 +8,7 @@ import pygame_gui
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game, screen, screen_x, screen_y
-from scripts.game_structure.image_button import UISpriteButton, UIImageButton
+from scripts.game_structure.ui_elements import UISpriteButton, UIImageButton
 from scripts.game_structure.windows import SaveError
 from scripts.utility import scale
 from .Screens import Screens
@@ -47,6 +47,7 @@ class ClanScreen(Screens):
         if game.switches['window_open']:
             pass
         elif event.type == pygame_gui.UI_BUTTON_START_PRESS:
+            self.mute_button_pressed(event)
             if event.ui_element == self.save_button:
                 try:
                     self.save_button_saving_state.show()
@@ -85,7 +86,7 @@ class ClanScreen(Screens):
 
         elif event.type == pygame.KEYDOWN and game.settings['keybinds']:
             if event.key == pygame.K_RIGHT:
-                self.change_screen('starclan screen')
+                self.change_screen('list screen')
             elif event.key == pygame.K_LEFT:
                 self.change_screen('events screen')
             elif event.key == pygame.K_SPACE:
@@ -100,6 +101,7 @@ class ClanScreen(Screens):
                 self.update_buttons_and_text()
 
     def screen_switches(self):
+        self.show_mute_buttons()
         self.update_camp_bg()
         game.switches['cat'] = None
         if game.clan.biome + game.clan.camp_bg in game.clan.layouts:
@@ -196,7 +198,12 @@ class ClanScreen(Screens):
         self.show_den_labels.disable()
         self.label_toggle = UIImageButton(scale(pygame.Rect((50, 1282), (64, 64))), "", object_id="#checked_checkbox")
 
-        self.save_button = UIImageButton(scale(pygame.Rect(((686, 1286), (228, 60)))), "", object_id="#save_button")
+        self.save_button = UIImageButton(
+            scale(pygame.Rect(((686, 1286), (228, 60)))),
+            "",
+            object_id="#save_button",
+            sound_id="save"
+        )
         self.save_button.enable()
         self.save_button_saved_state = pygame_gui.elements.UIImage(
             scale(pygame.Rect((686, 1286), (228, 60))),
@@ -342,7 +349,7 @@ class ClanScreen(Screens):
             if Cat.all_cats[x].dead or Cat.all_cats[x].outside:
                 continue
 
-            # Newborns are not meant to be placed. They are hiding. 
+            # Newborns are not meant to be placed. They are hiding.
             if Cat.all_cats[x].status == 'newborn' or game.config['fun']['all_cats_are_newborn']:
                 if game.config['fun']['all_cats_are_newborn'] or game.config['fun']['newborns_can_roam']:
                     # Free them
